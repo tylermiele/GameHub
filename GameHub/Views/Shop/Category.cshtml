@@ -1,0 +1,20 @@
+﻿@model IEnumerable<GameHub.Models.Product>
+@{
+    ViewData["Title"] = "Shop by Category";
+}
+<h1>You are shopping for @ViewData["Category"]</h1>
+
+<section class="row card-group"">
+    @foreach(var product in Model){
+        <div class="col-lg-4 mb-3">
+            <div class="card mb-4">
+                <div class="card-body text-center h-100">
+                <h3>@product.Name</h3>
+                <h5>@product.Price</h5>
+                <a class="btn btn-secondary">Add to Cart</a>
+                </div>
+            </div>
+            
+        </div>
+    }
+</section>
