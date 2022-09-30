@@ -13,5 +13,21 @@ namespace GameHub.Models
 
         [Range (0.01, 99999)]
         public decimal? Price { get; set; }
+
+        public string? Photo { get; set; }
+
+        //FK for Category
+        public int CategoryId { get; set; }
+
+        //reference to parent model
+        public Category? Category { get; set; }
+
+        //reference to child model - 1 product can be in many cart items
+        public List<CartItem>? CartItems { get; set; }
+
+        //reference to 2nd child model - 1 product can be in many order details (bought many items)
+        public List<OrderDetail>? OrderDetails { get; set; }
+
+        public int ReleaseYear { get; set; }
     }
 }
