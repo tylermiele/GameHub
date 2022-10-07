@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@600&family=Roboto&display=swap');
 html {
   font-size: 14px;
 }
@@ -14,5 +15,37 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    font-family: 'Roboto', sans-serif;
+}
+h1, h2, h3, h4, a, li {
+    font-family: 'Montserrat Alternates', sans-serif;
+}
+table.sortable th:hover{
+    cursor: pointer;
+}
+.sorttable_nosort:hover{
+    cursor: default !important;
+}
+.thumb {
+    width: 70px;
+}
+.navbar-dark {
+    background-color: #D32F2F;
+}
+.btn-primary {
+    background-color: #757575;
+}
+.btn-primary:hover {
+    background-color: #F44336;
+}
+.btn-secondary {
+    background-color: #212121;
+}
+
+a {
+    color: #F44336;
+}
+a:hover {
+    color: #D32F2F;
 }

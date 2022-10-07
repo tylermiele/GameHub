@@ -12,11 +12,14 @@ namespace GameHub.Models
         public string? Name { get; set; }
 
         [Range (0.01, 99999)]
+        [DisplayFormat(DataFormatString  = "{0:c}")]
         public decimal? Price { get; set; }
 
         public string? Photo { get; set; }
 
         //FK for Category
+        [Display(Name = "Category")]
+
         public int CategoryId { get; set; }
 
         //reference to parent model
@@ -28,6 +31,7 @@ namespace GameHub.Models
         //reference to 2nd child model - 1 product can be in many order details (bought many items)
         public List<OrderDetail>? OrderDetails { get; set; }
 
+        [Display(Name = "Release Year")]
         public int ReleaseYear { get; set; }
     }
 }

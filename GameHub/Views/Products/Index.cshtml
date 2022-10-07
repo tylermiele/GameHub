@@ -7,9 +7,9 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-secondary">Add a New Product</a>
 </p>
-<table class="table">
+<table class="table sortable table-striped table-hover">
     <thead>
         <tr>
             <th>
@@ -18,7 +18,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Price)
             </th>
-            <th>
+            <th class="sorttable_nosort">
                 @Html.DisplayNameFor(model => model.Photo)
             </th>
             <th>
@@ -27,7 +27,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.ReleaseYear)
             </th>
-            <th></th>
+            <th class="sorttable_nosort"></th>
         </tr>
     </thead>
     <tbody>
@@ -40,7 +40,11 @@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Photo)
+                @if(item.Photo != null){
+                    <img src="~/img/products/@item.Photo" alt="Game Photo" class="thumb"/>
+                }else{
+                    <img src="~/img/products/placeholder.gif" alt="Image Unavailable"/>
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Category.Name)

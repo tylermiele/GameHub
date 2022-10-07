@@ -22,7 +22,7 @@ namespace GameHub.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Products.Include(p => p.Category);
+            var applicationDbContext = _context.Products.OrderBy(p => p.Name).Include(p => p.Category);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -57,10 +57,16 @@ namespace GameHub.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductId,Name,Price,Photo,CategoryId,ReleaseYear")] Product product)
+        public async Task<IActionResult> Create([Bind("ProductId,Name,Price,Photo,CategoryId,ReleaseYear")] Product product, IFormFile? Photo)
         {
             if (ModelState.IsValid)
             {
+                //upload the product photo if the user selected one
+                if(Photo != null)
+                {
+                    var fileName = UploadPhoto(Photo);
+                    product.Photo = fileName;
+                }
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -164,5 +170,27 @@ namespace GameHub.Controllers
         {
           return _context.Products.Any(e => e.ProductId == id);
         }
+        //re-usable method to upload a product photo with a unique name
+        private static string UploadPhoto(IFormFile Photo)
+        {
+            //get tmp location of uploaded photo
+            var filePath = Path.GetTempFileName();
+
+            //use Globally Unique Identifier class (aka GUID) to ensure we name the photo with a unique name
+            var fileName = Guid.NewGuid() + "-" + Photo.FileName;
+
+            //set destination path to wwwroot/img/products
+            var uploadPath = System.IO.Directory.GetCurrentDirectory() + "\\wwwroot\\img\\products\\" + fileName;
+
+            //use a filestream to copy the upload to this folder
+            using (var stream = new FileStream(uploadPath, FileMode.Create))
+            {
+                Photo.CopyTo(stream);
+            }
+
+            //send back the new unique file name
+            return fileName;
+        }
+
     }
 }
