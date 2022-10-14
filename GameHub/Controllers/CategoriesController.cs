@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GameHub.Data;
 using GameHub.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GameHub.Controllers
 {
+    //requires user to be authenticated to access anything in here
+    [Authorize]
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
