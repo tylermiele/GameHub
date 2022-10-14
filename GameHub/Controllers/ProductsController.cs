@@ -7,9 +7,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GameHub.Data;
 using GameHub.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GameHub.Controllers
 {
+    //requires auth to access, no roles
+    //[Authorize]
+
+    //requires Admin role to access
+    [Authorize(Roles = "Administrator")]
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -27,6 +33,7 @@ namespace GameHub.Controllers
         }
 
         // GET: Products/Details/5
+        [AllowAnonymous] //make this view public to all users
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Products == null)
