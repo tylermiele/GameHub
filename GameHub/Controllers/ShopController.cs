@@ -1,13 +1,33 @@
-﻿using GameHub.Models;
+﻿using GameHub.Data;
+using GameHub.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameHub.Controllers
 {
     public class ShopController : Controller
     {
+        // add DB connection dependency object so we can do CRUD
+        private readonly ApplicationDbContext _context;
+
+        //constructor runs automatically when calling this controller and uses our DB connection
+        public ShopController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
         public IActionResult Index()
         {
-            return View();
+            // fetch list of categories to dispay so customer can pick one
+            var categories = _context.Categories.OrderBy(c => c.Name).ToList();
+            return View(categories);
+        }
+
+        public IActionResult ByCategory(string name)
+        {
+            // store selected Category name in ViewData for display on page heading
+            ViewData["Category"] = name;
+            //fetch products in the selected category
+            var products = _context.Products.Where(p => p.Category.Name == name).ToList();
+            return View(products);
         }
         public IActionResult Category(string Name)
         {
