@@ -28,7 +28,9 @@
                     {
                         <img src="~/img/products/placeholder.gif" alt="Placeholder Image" title="No image found" />
                     }
-
+                    <div class="mt-3">
+                        <a class="btn btn-primary" asp-action="AddToCart" asp-route-id="@item.ProductId">Add To Cart</a>
+                    </div>
                 </div>
             </div>
         </div>

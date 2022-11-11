@@ -29,6 +29,48 @@ namespace GameHub.Controllers
             var products = _context.Products.Where(p => p.Category.Name == name).ToList();
             return View(products);
         }
+
+        public IActionResult AddToCart(int id)
+        {
+            //fetch selected product to get the price
+            var product = _context.Products.Find(id);
+            var price = product.Price;
+
+            //create and save a new CartItm to the DB
+            var cartItem = new CartItem
+            {
+                ProductId = id,
+                Quantity = 1,
+                Price = (decimal)price,
+                CustomerId = GetCartIdentifier()
+            };
+
+            _context.Add(cartItem);
+            _context.SaveChanges();
+
+            //redirect to the cart page
+            return RedirectToAction("Cart");
+        }
+        private string GetCartIdentifier()
+        {
+            //is there already a session var with a cart id?
+            //we need to use a session var because HTTP is stateless - variables do not perist between HTTP requests
+            if(HttpContext.Session.GetString("CartIdentifier") == null)
+            {
+                //if not, use a GUID to create a unique id and store in a new session var
+                HttpContext.Session.SetString("CartIdentifier", Guid.NewGuid().ToString());
+            }
+
+            //if we already have a cart id session var, just use this existing value
+
+            return HttpContext.Session.GetString("CartIdentifier");
+        }
+        public IActionResult Cart()
+        {
+            //fetch cartItems for display
+            var cartItems = _context.CartItems.ToList();
+            return View(cartItems);
+        }
         public IActionResult Category(string Name)
         {
             // ensure some category name was passed in

@@ -10,7 +10,7 @@ namespace GameHub.Models
         public int Quantity { get; set; }
 
         [Required]
-        public double Price { get; set; }
+        public decimal Price { get; set; }
 
         [Required]
         public string? CustomerId { get; set; }

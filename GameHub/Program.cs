@@ -28,6 +28,9 @@ builder.Services.AddAuthentication().AddGoogle(options =>
     options.AppSecret = configuration["Authentication:Facebook:AppSecret"];
 });
 
+//enable sessions
+builder.Services.AddSession();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -54,5 +57,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+
+app.UseSession(); //support for sessions
 
 app.Run();
