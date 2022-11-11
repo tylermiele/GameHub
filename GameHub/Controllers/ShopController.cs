@@ -1,6 +1,7 @@
 ﻿using GameHub.Data;
 using GameHub.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameHub.Controllers
 {
@@ -36,16 +37,28 @@ namespace GameHub.Controllers
             var product = _context.Products.Find(id);
             var price = product.Price;
 
-            //create and save a new CartItm to the DB
-            var cartItem = new CartItem
+            //check if this user already has this item in their cart. SingleOrDefault selects only 1 record or nothing
+            var cartItem = _context.CartItems.SingleOrDefault(c => c.ProductId == id && c.CustomerId == GetCartIdentifier());
+            if(cartItem == null)
             {
-                ProductId = id,
-                Quantity = 1,
-                Price = (decimal)price,
-                CustomerId = GetCartIdentifier()
-            };
+                //create and save a new CartItm to the DB
+                cartItem = new CartItem
+                {
+                    ProductId = id,
+                    Quantity = 1,
+                    Price = (decimal)price,
+                    CustomerId = GetCartIdentifier()
+                };
+                _context.Add(cartItem);
 
-            _context.Add(cartItem);
+            }
+            else
+            {
+                cartItem.Quantity += 1;
+                _context.Update(cartItem);
+            }
+           
+
             _context.SaveChanges();
 
             //redirect to the cart page
@@ -67,8 +80,13 @@ namespace GameHub.Controllers
         }
         public IActionResult Cart()
         {
+            var cartIdentifier = GetCartIdentifier();
             //fetch cartItems for display
-            var cartItems = _context.CartItems.ToList();
+            var cartItems = _context.CartItems.Include(c => c.Product).Where(c => c.CustomerId == cartIdentifier).ToList();
+
+            //count items in cart to display in nav
+            var itemCount = (from c in cartItems select c.Quantity).Sum();
+            HttpContext.Session.SetInt32("ItemCount", itemCount);
             return View(cartItems);
         }
         public IActionResult Category(string Name)
