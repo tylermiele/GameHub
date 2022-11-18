@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "Payment";
+}
+
+<script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
+<script src="https://js.stripe.com/v3/"></script>
+
+<h1>Redirecting to Payment...</h1>
+<form method="post" action="/Shop/ProcessPayment" id="paymentForm">
+    
+</form>
+
+<script>
+    let form = document.getElementById('paymentForm');
+    form.submit();
+</script>
