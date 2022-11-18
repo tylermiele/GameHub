@@ -1,5 +1,6 @@
 ﻿using GameHub.Data;
 using GameHub.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -87,6 +88,11 @@ namespace GameHub.Controllers
             //count items in cart to display in nav
             var itemCount = (from c in cartItems select c.Quantity).Sum();
             HttpContext.Session.SetInt32("ItemCount", itemCount);
+
+            // calculate cart total to display on cart page
+            var cartTotal = (from c in cartItems select c.Quantity * c.Price).Sum();
+            ViewData["CartTotal"] = cartTotal;
+
             return View(cartItems);
         }
         public IActionResult Category(string Name)
@@ -111,6 +117,43 @@ namespace GameHub.Controllers
 
             // load the page and pass it the product data to display
             return View(products);
+        }
+        // GET: /Shop/RemoveFromCart/5 => delete thsi itemfrom the current cart
+        public IActionResult RemoveFromCart(int id)
+        {
+            var cartItem = _context.CartItems.SingleOrDefault(c => c.CartItemId == id);
+            _context.Remove(cartItem);
+            _context.SaveChanges();
+
+            return RedirectToAction("Cart");
+        }
+
+        //GET: /Shop/Checkout => show checkout form. only for authenicated users
+        [Authorize]
+        public IActionResult Checkout()
+        {
+            return View();
+        }
+
+        //POST: /Shop/Checkout => save all order and customer data to a session var
+        [HttpPost]
+        public IActionResult Checkout([Bind("FirstName,LastName,Address,City,Province,PostalCode,Phone")] Order order)
+        {
+            //create new order in memory from the form inputs. save to DB only after successful payment.
+            //auto-fill some of the values
+            order.OrderDate = DateTime.Now;
+            order.CustomerId = User.Identity.Name;
+
+            //calculate the order total
+            var cartItems = _context.CartItems.Where(c => c.CustomerId == HttpContext.Session.GetString("CartIdentifier"));
+            order.OrderTotal = (from c in cartItems select c.Quantity * c.Price).Sum();
+
+            //save the order to a session var
+            // .NET session only support int and String so we need to add an extension library
+            HttpContext.Session.SetObject("Order", order);
+
+            // start Stripe payment
+            return RedirectToAction("Payment");
         }
     }
 }

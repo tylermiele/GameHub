@@ -33,7 +33,7 @@ table.sortable th:hover{
 .navbar-dark {
     background-color: #D32F2F;
 }
-.btn-primary {
+.btn-primary, .badge-primary{
     background-color: #757575;
 }
 .btn-primary:hover {
@@ -49,3 +49,4 @@ a {
 a:hover {
     color: #D32F2F;
 }
+

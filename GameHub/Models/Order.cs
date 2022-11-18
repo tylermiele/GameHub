@@ -11,7 +11,7 @@ namespace GameHub.Models
         public DateTime OrderDate { get; set; }
 
         [Display(Name = "Order Total")]
-        public double OrderTotal { get; set; }
+        public decimal OrderTotal { get; set; }
 
         [Required]
         [Display(Name = "First Name")]
