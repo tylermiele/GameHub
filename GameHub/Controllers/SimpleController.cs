@@ -6,6 +6,7 @@ namespace GameHub.Controllers
     {
         public IActionResult Index()
         {
+            ViewData["Message"] = "Today is " + DateTime.Today.ToString();
             //old code - works but not as good because the view name is implied but not stated explicitly
             //return View();
 

@@ -32,5 +32,19 @@ namespace GameHubTests
             //assert - did th method return something and not a null response
             Assert.AreEqual("Index", result.ViewName);
         }
+
+        [TestMethod]
+        public void IndexViewDataShowsCurrentDate()
+        {
+            //arrange
+            var controller = new SimpleController();
+
+            //act
+            var result = (ViewResult)controller.Index();
+
+
+            //assert
+            Assert.AreEqual("Today is " + DateTime.Today.ToString(), result.ViewData["Message"].ToString());
+        }
     }
 }
