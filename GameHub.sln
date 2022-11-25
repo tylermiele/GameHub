@@ -5,6 +5,8 @@ VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameHub", "GameHub\GameHub.csproj", "{BBFFAFC3-B63C-4F13-8A42-456A65DE4543}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameHubTests", "GameHubTests\GameHubTests.csproj", "{32ACB8C8-DEE5-4528-B746-1DCEE41405E3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{BBFFAFC3-B63C-4F13-8A42-456A65DE4543}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBFFAFC3-B63C-4F13-8A42-456A65DE4543}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBFFAFC3-B63C-4F13-8A42-456A65DE4543}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32ACB8C8-DEE5-4528-B746-1DCEE41405E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32ACB8C8-DEE5-4528-B746-1DCEE41405E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32ACB8C8-DEE5-4528-B746-1DCEE41405E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32ACB8C8-DEE5-4528-B746-1DCEE41405E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
