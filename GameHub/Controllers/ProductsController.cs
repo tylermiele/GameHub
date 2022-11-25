@@ -38,7 +38,7 @@ namespace GameHub.Controllers
         {
             if (id == null || _context.Products == null)
             {
-                return NotFound();
+                return View("404");
             }
 
             var product = await _context.Products
@@ -46,10 +46,10 @@ namespace GameHub.Controllers
                 .FirstOrDefaultAsync(m => m.ProductId == id);
             if (product == null)
             {
-                return NotFound();
+                return View("404");
             }
 
-            return View(product);
+            return View("Details", product);
         }
 
         // GET: Products/Create
