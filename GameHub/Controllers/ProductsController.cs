@@ -108,7 +108,7 @@ namespace GameHub.Controllers
         {
             if (id != product.ProductId)
             {
-                return NotFound();
+                return View("404");
             }
 
             if (ModelState.IsValid)
@@ -122,17 +122,17 @@ namespace GameHub.Controllers
                 {
                     if (!ProductExists(product.ProductId))
                     {
-                        return NotFound();
+                        return View("404");
                     }
                     else
                     {
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Edit));
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "Name", product.CategoryId);
-            return View(product);
+            return View("Edit", product);
         }
 
         // GET: Products/Delete/5

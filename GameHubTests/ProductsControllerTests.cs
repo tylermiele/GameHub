@@ -140,6 +140,46 @@ namespace GameHubTests
             Assert.AreEqual("Details", result.ViewName);
         }
         #endregion
+
+        [TestMethod]
+        public void EditInvalidIdLoads404()
+        {
+
+            var result = (ViewResult)controller.Edit(4, _context.Products.Find(1)).Result;
+
+            //assert
+            Assert.AreEqual("404", result.ViewName);
+        }
+
+        [TestMethod]
+        public void EditInvalidModelState()
+        {
+            controller.ModelState.AddModelError("Edit", "404");
+
+            var result = (ViewResult)controller.Edit(1, _context.Products.Find(1)).Result;
+
+            Assert.AreEqual("Edit", result.ViewName);
+        }
+
+        [TestMethod]
+        public void EditSavesValidProduct()
+        {
+            var product = _context.Products.Find(1);
+            product.Price = 10;
+            var result = (RedirectToActionResult)controller.Edit(1, product).Result;
+            
+            
+            Assert.AreEqual(product, _context.Products.Find(1));
+        }
+        [TestMethod]
+        public void EditLoadsView()
+        {
+
+            var result = (RedirectToActionResult)controller.Edit(1, _context.Products.Find(1)).Result;
+
+            Assert.AreEqual("Edit", result.ActionName);
+
+        }
     }
 
 }
