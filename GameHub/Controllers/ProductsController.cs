@@ -79,7 +79,7 @@ namespace GameHub.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "Name", product.CategoryId);
-            return View(product);
+            return View("Create", product);
         }
 
         // GET: Products/Edit/5

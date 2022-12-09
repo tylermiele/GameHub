@@ -141,6 +141,7 @@ namespace GameHubTests
         }
         #endregion
 
+        #region "Edit"
         [TestMethod]
         public void EditInvalidIdLoads404()
         {
@@ -180,6 +181,62 @@ namespace GameHubTests
             Assert.AreEqual("Edit", result.ActionName);
 
         }
+        #endregion
+
+        #region "Create"
+        [TestMethod]
+        public void CreateValidProductSavesToDb()
+        {
+            var product = new Product
+            {
+                ProductId = 50,
+                Name = "New Product",
+                Price = (decimal?)59.99,
+                CategoryId = 1000
+            };
+
+            var result = controller.Create(product, null);
+
+            Assert.AreEqual(product, _context.Products.Find(50));
+        }
+
+        [TestMethod]
+        public void CreateValidProductRedirectsToIndex()
+        {
+            var product = new Product
+            {
+                ProductId = 50,
+                Name = "New Product",
+                Price = (decimal?)59.99,
+                CategoryId = 1000
+            };
+            var result = (RedirectToActionResult)controller.Create(product, null).Result;
+
+            Assert.AreEqual("Index", result.ActionName);
+        }
+
+        [TestMethod]
+        public void CreateInvalidModelReloadsCreateView()
+        {
+            var product = new Product { };
+
+            controller.ModelState.AddModelError("Model Error", "Properties are incomplete");
+            var result = (ViewResult)controller.Create(product, null).Result;
+
+            Assert.AreEqual("Create", result.ViewName);
+        }
+        #endregion
+
+        #region "Delete"
+        [TestMethod]
+        public void DeleteValidIdRemovesProductFromDb()
+        {
+            var result = controller.DeleteConfirmed(1);
+
+            Assert.IsNull(_context.Products.Find(1));
+        }
+
+        #endregion
     }
 
 }

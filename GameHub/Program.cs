@@ -31,6 +31,9 @@ builder.Services.AddAuthentication().AddGoogle(options =>
 //enable sessions
 builder.Services.AddSession();
 
+//enable swagger
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -59,5 +62,9 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 app.UseSession(); //support for sessions
+
+//swagger: generate api docs and display as a web page
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.Run();
